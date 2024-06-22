@@ -22,6 +22,11 @@ const LeftPanel = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const activeProfile = data.find((profile) => profile.status === "active");
+    setProfileName(activeProfile ? activeProfile.name : "");
+  }, [data]);
+
+  useEffect(() => {
     const savedData = JSON.parse(localStorage.getItem("profilesData"));
     if (savedData) {
       dispatch(setData(savedData));
@@ -95,7 +100,7 @@ const LeftPanel = () => {
                 <div className={`profile-item ${profile.icon} active`}></div>
                 <input
                   type="text"
-                  value={profile.name}
+                  value={profileName}
                   className={`profile-item show`}
                   placeholder="Enter Profile Name"
                   onChange={(e) => setProfileName(e.target.value)}
