@@ -13,7 +13,6 @@ const LeftPanel = () => {
   const data = useSelector((state) => state.data.data);
   const editId = useSelector((state) => state.data.editId);
   const [profileName, setProfileName] = useState("");
-  const [id, setId] = useState(0);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -78,7 +77,6 @@ const LeftPanel = () => {
   };
 
   const handleFetchById = (id) => {
-    setId(id);
     dispatch(updateStatus({ id }));
     dispatch(setEditId(null));
   };
