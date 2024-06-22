@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "name": "default",
+    "icon": "default",
+    "isEditable": false,
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "game",
+    "icon": "game",
+    "isEditable": false,
+    "status": ""
+  },
+  {
+    "id": 3,
+    "name": "movie",
+    "icon": "movie",
+    "isEditable": false,
+    "status": ""
+  },
+  {
+    "id": 4,
+    "name": "music",
+    "icon": "music",
+    "isEditable": false,
+    "status": ""
+  },
+  {
+    "id": 5,
+    "name": "Demo Long Text Demo Long",
+    "icon": "default",
+    "isEditable": true,
+    "status": ""
+  }
+]
