@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../assets/css/profile.css";
 import {
   setData,
@@ -13,6 +13,8 @@ const LeftPanel = () => {
   //Redux selectors to get the data and editId from the store
   const data = useSelector((state) => state.data.data);
   const editId = useSelector((state) => state.data.editId);
+
+  const scrollableRef = useRef(null); // Ref for the scrollable div
 
   // Local state to manage the profile name input
   const [profileName, setProfileName] = useState("");
@@ -62,6 +64,14 @@ const LeftPanel = () => {
     }
   }, [profileName, editId, dispatch]);
 
+  // useEffect for handling the scrollable component
+  useEffect(() => {
+    if (scrollableRef.current) {
+      // Scroll to bottom when data changes
+      scrollableRef.current.scrollTop = scrollableRef.current.scrollHeight;
+    }
+  }, [data]);
+
   //Handle Enter key press event for the input field to uddate editId
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && profileName.trim() !== "") {
@@ -78,7 +88,7 @@ const LeftPanel = () => {
     <div className="thx-drawer flex">
       <div className="main-title">PROFILE LIST</div>
       <div className="drawer-select flex">
-        <div className="scrollable">
+        <div className="scrollable" ref={scrollableRef}>
           {data.map((profile, key) =>
             editId === profile.id ? (
               <div className="flex">
