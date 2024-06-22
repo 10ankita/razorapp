@@ -26,10 +26,11 @@ const Toolbar = ({ data }) => {
     }
   };
 
+  //handle event for adding a profile
   const handleAddProfile = async () => {
     let maxId = 0;
     if (data.length > 0) {
-      maxId = Math.max(...data.map((item) => item.id));
+      maxId = Math.max(...data.map((item) => item.id)); //getting the max id available for new profile
     }
     const newProfile = {
       id: maxId + 1,

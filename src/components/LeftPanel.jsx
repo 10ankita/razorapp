@@ -10,9 +10,13 @@ import Toolbar from "./Toolbar";
 import { useDispatch, useSelector } from "react-redux";
 
 const LeftPanel = () => {
+  //Redux selectors to get the data and editId from the store
   const data = useSelector((state) => state.data.data);
   const editId = useSelector((state) => state.data.editId);
+
+  // Local state to manage the profile name input
   const [profileName, setProfileName] = useState("");
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,14 +27,10 @@ const LeftPanel = () => {
         (profile) => profile.status === "active"
       );
       if (!activeProfile && savedData.length > 0) {
-        dispatch(
-          updateStatus(
-            { id: savedData[0].id },
-            { selectedName: savedData[0].name }
-          )
-        );
+        dispatch(updateStatus({ id: savedData[0].id }));
       }
     } else {
+      // Fetch data from the server if not available in localStorage
       fetch("/data.json")
         .then((response) => response.json())
         .then((jsonData) => {
@@ -47,32 +47,25 @@ const LeftPanel = () => {
     }
   }, [dispatch]);
 
+  // useEffect to handle profile name updates when editId or profileName changes
   useEffect(() => {
-    const saveProfile = async () => {
-      if (editId !== null) {
-        if (profileName !== "") {
-          const updatedProfile = {
-            id: editId,
-            name: profileName.trim(),
-            icon: "default",
-            isEditable: true,
-            status: "active",
-          };
-          // Dispatch the updated profile to Redux store
-          dispatch(updateData(updatedProfile));
-        }
-      }
-    };
-
-    saveProfile();
+    if (editId !== null && profileName.trim() !== "") {
+      const updatedProfile = {
+        id: editId,
+        name: profileName.trim(),
+        icon: "default",
+        isEditable: true,
+        status: "active",
+      };
+      // Dispatch the updated profile to Redux store
+      dispatch(updateData(updatedProfile));
+    }
   }, [profileName, editId, dispatch]);
 
+  //Handle Enter key press event for the input field to uddate editId
   const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      const trimmedName = profileName.trim();
-      if (trimmedName !== "") {
-        dispatch(setEditId(null));
-      }
+    if (e.key === "Enter" && profileName.trim() !== "") {
+      dispatch(setEditId(null));
     }
   };
 
@@ -88,17 +81,18 @@ const LeftPanel = () => {
         <div className="scrollable">
           {data.map((profile, key) =>
             editId === profile.id ? (
-              // <div className={profile.icon}>
-              <input
-                type="text"
-                value={profile.name}
-                className={`profile-item show ${profile.icon}`}
-                placeholder="Enter Profile Name"
-                onChange={(e) => setProfileName(e.target.value)}
-                onKeyPress={handleKeyPress}
-              />
+              <div className="flex">
+                <div className={`profile-item ${profile.icon} active`}></div>
+                <input
+                  type="text"
+                  value={profile.name}
+                  className={`profile-item show`}
+                  placeholder="Enter Profile Name"
+                  onChange={(e) => setProfileName(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                />
+              </div>
             ) : (
-              // </div>
               <div
                 onClick={() => handleFetchById(profile.id)}
                 key={key}
