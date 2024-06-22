@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateStatus,
   addData,
@@ -9,6 +9,7 @@ import {
 
 const Toolbar = ({ data }) => {
   const dispatch = useDispatch();
+  const editId = useSelector((state) => state.data.editId);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
   const currentIndex = useMemo(
     () => data.findIndex((item) => item.status === "active"),
@@ -28,6 +29,9 @@ const Toolbar = ({ data }) => {
 
   //handle event for adding a profile
   const handleAddProfile = async () => {
+    if (editId !== null) {
+      dispatch(setEditId(null));
+    }
     let maxId = 0;
     if (data.length > 0) {
       maxId = Math.max(...data.map((item) => item.id)); //getting the max id available for new profile
