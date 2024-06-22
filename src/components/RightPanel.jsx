@@ -14,7 +14,9 @@ const RightPanel = () => {
   return (
     <div className="thx-window">
       <div className="sub-title flex">
-        <h1 className="eq-title">{selectedName}</h1>
+        <h1 className="eq-title" data-testid="profilename">
+          {selectedName}
+        </h1>
       </div>
     </div>
   );
